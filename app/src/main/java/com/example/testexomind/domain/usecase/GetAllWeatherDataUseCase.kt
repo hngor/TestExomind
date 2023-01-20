@@ -19,10 +19,12 @@ class GetAllWeatherDataUseCase(val getSingleCityWeatherDataUseCase: GetSingleCit
         val cities = listOf("Rennes", "Paris", "Nantes", "Bordeaux", "Lyon")
         var currentCityIndex = 0
 
+        //Update the progress every second
         (1..60).asFlow().collect() { value ->
             if (value == 60) {
                 emit(WeatherDataState.WeatherData(weatherData))
             } else {
+                //Every 10 seconds, retrieve the weather data
                 if (value % 10 == 0) {
                     val data = getSingleCityWeatherDataUseCase(cities[currentCityIndex])
                     weatherData.add(data)
